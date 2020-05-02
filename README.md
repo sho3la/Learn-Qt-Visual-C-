@@ -1,1 +1,1 @@
-# Learn-Qt-Visual-C-
+# Learn Qt VisualC++
