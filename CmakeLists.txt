@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.9)
+
+project ("QTC++_Tutorials")
+
+#excutable
+add_subdirectory(01_QtSetup)
