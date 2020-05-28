@@ -1,0 +1,79 @@
+cmake_minimum_required(VERSION 3.9)
+
+project ("06_QLayouts")
+
+# list the header files
+set(HEADER_FILES
+
+)
+
+# list the source files
+set(SOURCE_FILES
+	main.cpp
+)
+
+
+# link with qt5
+find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+qt5_wrap_cpp(HEADER_MOC ${HEADER_FILES})
+
+# add library target
+add_executable(06_QLayouts
+	${HEADER_FILES}
+	${SOURCE_FILES}
+	${HEADER_MOC}
+	${RCC_SOURCES}
+)
+
+set(QT_LIBS
+	Qt5::Core
+	Qt5::Gui
+	Qt5::Widgets
+)
+
+target_link_libraries(06_QLayouts
+	PUBLIC
+		${QT_LIBS}
+)
+
+
+if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+
+add_custom_command(
+    TARGET 06_QLayouts POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Qt5::Widgets>
+		$<TARGET_FILE:Qt5::Core>
+		$<TARGET_FILE:Qt5::Gui>
+        $<TARGET_FILE_DIR:06_QLayouts>
+)
+else("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
+add_custom_command(
+    TARGET 06_QLayouts POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Qt5::Widgets>
+		$<TARGET_FILE:Qt5::Core>
+		$<TARGET_FILE:Qt5::Gui>
+        $<TARGET_FILE_DIR:06_QLayouts>
+)
+ENDIF()
+
+
+# Windows specfic flags to enable W variations of winapi
+if(WIN32)
+	target_compile_definitions(06_QLayouts
+		PRIVATE
+			OS_WINDOWS=1
+	)
+	target_compile_options(06_QLayouts
+		PRIVATE
+			/WX
+	)
+endif()
+
+# enable C++17
+# disable any compiler specifc extensions
+target_compile_features(06_QLayouts PUBLIC cxx_std_17)
+set_target_properties(06_QLayouts PROPERTIES
+	CXX_EXTENSIONS OFF
+)
