@@ -14,7 +14,10 @@ set(SOURCE_FILES
 
 
 # link with qt5
-find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(Qt5Core    CONFIG REQUIRED)
+find_package(Qt5Widgets CONFIG REQUIRED)
+find_package(Qt5Gui     CONFIG REQUIRED)
+
 qt5_wrap_cpp(HEADER_MOC ${HEADER_FILES})
 
 # add library target
@@ -35,28 +38,6 @@ target_link_libraries(05_QLayouts
 	PUBLIC
 		${QT_LIBS}
 )
-
-
-if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
-
-add_custom_command(
-    TARGET 05_QLayouts POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:Qt5::Widgets>
-		$<TARGET_FILE:Qt5::Core>
-		$<TARGET_FILE:Qt5::Gui>
-        $<TARGET_FILE_DIR:05_QLayouts>
-)
-else("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
-add_custom_command(
-    TARGET 05_QLayouts POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:Qt5::Widgets>
-		$<TARGET_FILE:Qt5::Core>
-		$<TARGET_FILE:Qt5::Gui>
-        $<TARGET_FILE_DIR:05_QLayouts>
-)
-ENDIF()
 
 
 # Windows specfic flags to enable W variations of winapi
