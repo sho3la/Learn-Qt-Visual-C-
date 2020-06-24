@@ -1,0 +1,59 @@
+cmake_minimum_required(VERSION 3.9)
+
+project ("10_TextEditor")
+
+set(CMAKE_AUTORCC ON)
+
+# list the header files
+set(HEADER_FILES
+	Mainwindow.h
+)
+
+# list the source files
+set(SOURCE_FILES
+	main.cpp
+	Mainwindow.cpp
+)
+
+# list the resources files
+set(RESOURCES_FILES
+	resources/resources.qrc
+)
+
+# link with qt5
+find_package(Qt5Widgets CONFIG REQUIRED)
+
+# add library target
+add_executable(10_TextEditor
+	${HEADER_FILES}
+	${SOURCE_FILES}
+	${RESOURCES_FILES}
+)
+
+set(QT_LIBS
+	Qt5::Widgets
+)
+
+target_link_libraries(10_TextEditor
+	PUBLIC
+		${QT_LIBS}
+)
+
+# Windows specfic flags to enable W variations of winapi
+if(WIN32)
+	target_compile_definitions(10_TextEditor
+		PRIVATE
+			OS_WINDOWS=1
+	)
+	target_compile_options(10_TextEditor
+		PRIVATE
+			/WX
+	)
+endif()
+
+# enable C++17
+# disable any compiler specifc extensions
+target_compile_features(10_TextEditor PUBLIC cxx_std_17)
+set_target_properties(10_TextEditor PROPERTIES
+	CXX_EXTENSIONS OFF
+)
