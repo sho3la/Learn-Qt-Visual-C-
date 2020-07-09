@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.9)
+
+project ("Qt_Opengl")
+
+#excutable
+add_subdirectory(glew)
+add_subdirectory(TextEditor)

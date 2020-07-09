@@ -1,0 +1,71 @@
+cmake_minimum_required(VERSION 3.9)
+
+project ("11_TextEditor_opengl")
+
+set(CMAKE_AUTORCC ON)
+
+# list the header files
+set(HEADER_FILES
+	Mainwindow.h
+	openglwidget.h
+)
+
+# list the source files
+set(SOURCE_FILES
+	main.cpp
+	Mainwindow.cpp
+	openglwidget.cpp
+)
+
+# list the resources files
+set(RESOURCES_FILES
+	resources/resources.qrc
+)
+
+# link with qt5
+find_package(Qt5Widgets CONFIG REQUIRED)
+
+# add library target
+add_executable(11_TextEditor_opengl
+	${HEADER_FILES}
+	${SOURCE_FILES}
+	${RESOURCES_FILES}
+)
+
+set(QT_LIBS
+	Qt5::Widgets
+	
+	# link external library
+	opengl32
+	glew
+)
+
+target_link_libraries(11_TextEditor_opengl
+	PUBLIC
+		${QT_LIBS}
+)
+
+# Windows specfic flags to enable W variations of winapi
+if(WIN32)
+	target_compile_definitions(11_TextEditor_opengl
+		PRIVATE
+			OS_WINDOWS=1
+	)
+	target_compile_options(11_TextEditor_opengl
+		PRIVATE
+			/WX
+	)
+endif()
+
+# enable C++17
+# disable any compiler specifc extensions
+target_compile_features(11_TextEditor_opengl PUBLIC cxx_std_17)
+set_target_properties(11_TextEditor_opengl PROPERTIES
+	CXX_EXTENSIONS OFF
+)
+
+# list include directories
+target_include_directories(11_TextEditor_opengl
+	PUBLIC
+	${CMAKE_SOURCE_DIR}/11_Qt_opengl/glew/include/GL
+)
